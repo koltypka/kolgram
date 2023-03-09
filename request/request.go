@@ -1,7 +1,7 @@
 package request
 
 import (
-	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 
@@ -18,29 +18,29 @@ func New(host string) Request {
 }
 
 func (r *Request) run(method string, query url.Values) (data []byte, err error) {
-	defer func() {err = myErr.Handle("Request error", err)}
+	defer func() { err = myErr.Handle("Request error", err) }()
 
 	myUrl := url.URL{Scheme: "https", Host: r.host, Path: method}
 
 	req, err := http.NewRequest(http.MethodGet, myUrl.String(), nil)
 
 	if err != nil {
-		return nil,err 
+		return nil, err
 	}
-	
+
 	req.URL.RawQuery = query.Encode()
 
 	result, err := r.client.Do(req)
 
 	if err != nil {
-		return nil, err 
+		return nil, err
 	}
 
-	defer func(){_=result.Body.Close()}()
+	defer func() { _ = result.Body.Close() }()
 
 	body, err := io.ReadAll(result.Body)
 	if err != nil {
-		return nil, err 
+		return nil, err
 	}
 
 	return body, nil
