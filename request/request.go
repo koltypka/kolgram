@@ -17,7 +17,7 @@ func New(host string) Request {
 	return Request{host: host, client: http.Client{}}
 }
 
-func (r *Request) run(method string, query url.Values) (data []byte, err error) {
+func (r *Request) Run(method string, query url.Values) (data []byte, err error) {
 	defer func() { err = myErr.Handle("Request error", err) }()
 
 	myUrl := url.URL{Scheme: "https", Host: r.host, Path: method}
