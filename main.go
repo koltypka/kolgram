@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"net/url"
 
 	"github.com/koltypka/kolgram/request"
 )
@@ -14,12 +13,12 @@ import (
 //"logic"
 
 func main() {
-	Request := request.New("api.hh.ru") //https://api.gismeteo.net/v2/weather/current/?latitude=54.35&longitude=52.52
-	v := url.Values{}
-	/*v.Add("latitude", "54.35")
-	v.Add("longitude", "52.52")*/
+	Request := request.New("https://api.hh.ru") //https://api.gismeteo.net/v2/weather/current/?latitude=54.35&longitude=52.52
 
-	aaa, _ := Request.Run("vacancies/", v)
+	Request.AddParam("employer_id", "1975264")
+	Request.AddParam("page", "2")
+
+	aaa, _ := Request.Get("vacancies/")
 
 	var hm interface{}
 

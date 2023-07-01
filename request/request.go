@@ -9,26 +9,50 @@ import (
 )
 
 type Request struct {
-	host   string
-	client http.Client
+	rawUrl     string
+	client     http.Client
+	header     string
+	parameters map[string]string
 }
 
-func New(host string) Request {
-	return Request{host: host, client: http.Client{}}
+func New(rawUrl string) Request {
+	return Request{
+		rawUrl:     rawUrl,
+		client:     http.Client{},
+		header:     "", //TODO написать обработку хедеров запроса
+		parameters: make(map[string]string)}
 }
 
-func (r *Request) Run(method string, query url.Values) (data []byte, err error) {
+func (r *Request) AddParam(key, value string) {
+	r.parameters[key] = value
+}
+
+func (r *Request) Get(method string) (data []byte, err error) {
+	return r.run(method, http.MethodGet)
+}
+
+func (r *Request) Post(method string) (data []byte, err error) {
+	return r.run(method, http.MethodPost)
+}
+
+func (r *Request) run(method, httpMethod string) (data []byte, err error) {
 	defer func() { err = myErr.Handle("Request error", err) }()
 
-	myUrl := url.URL{Scheme: "https", Host: r.host, Path: method}
-
-	req, err := http.NewRequest(http.MethodGet, myUrl.String(), nil)
+	parsedURL, err := url.Parse(r.rawUrl)
 
 	if err != nil {
 		return nil, err
 	}
 
-	req.URL.RawQuery = query.Encode()
+	myUrl := url.URL{Scheme: parsedURL.Scheme, Host: parsedURL.Host, Path: method}
+
+	req, err := http.NewRequest(httpMethod, myUrl.String(), nil)
+
+	if err != nil {
+		return nil, err
+	}
+
+	req.URL.RawQuery = r.prepareParams().Encode()
 
 	result, err := r.client.Do(req)
 
@@ -44,4 +68,14 @@ func (r *Request) Run(method string, query url.Values) (data []byte, err error) 
 	}
 
 	return body, nil
+}
+
+func (r *Request) prepareParams() url.Values {
+	result := url.Values{}
+
+	for key, value := range r.parameters {
+		result.Set(key, value)
+	}
+
+	return result
 }
