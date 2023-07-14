@@ -11,7 +11,7 @@ import (
 type Request struct {
 	rawUrl     string
 	client     http.Client
-	header     string
+	header     map[string]string
 	parameters map[string]string
 }
 
@@ -19,12 +19,16 @@ func New(rawUrl string) Request {
 	return Request{
 		rawUrl:     rawUrl,
 		client:     http.Client{},
-		header:     "", //TODO написать обработку хедеров запроса
+		header:     make(map[string]string), //TODO написать обработку хедеров запроса
 		parameters: make(map[string]string)}
 }
 
 func (r *Request) AddParam(key, value string) {
 	r.parameters[key] = value
+}
+
+func (r *Request) AddHeader(key, value string) {
+	r.header[key] = value
 }
 
 func (r *Request) Get(method string) (data []byte, err error) {
@@ -52,7 +56,8 @@ func (r *Request) run(method, httpMethod string) (data []byte, err error) {
 		return nil, err
 	}
 
-	req.URL.RawQuery = r.prepareParams().Encode()
+	r.prepareHeaders(req)
+	req.URL.RawQuery = r.prepareParams().Encode() //подставляем параметры
 
 	result, err := r.client.Do(req)
 
@@ -68,6 +73,12 @@ func (r *Request) run(method, httpMethod string) (data []byte, err error) {
 	}
 
 	return body, nil
+}
+
+func (r *Request) prepareHeaders(req *http.Request) {
+	for key, value := range r.header {
+		req.Header.Add(key, value)
+	}
 }
 
 func (r *Request) prepareParams() url.Values {
