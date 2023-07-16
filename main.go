@@ -1,8 +1,6 @@
 package main
 
-import (
-	"github.com/koltypka/kolgram/kolgram"
-)
+import "github.com/koltypka/kolgram/kolgram"
 
 //"kolgram";
 //"SQL";
@@ -10,8 +8,8 @@ import (
 //"logic"
 
 func main() {
-	kolgramOb = kolgram.New("5323142349:AAGUGpI6oMgezVoediL7NYSmn65FVKnb7Q0")
-	kolgramOb.getUpdates()
+	kolgramOb := kolgram.New("5323142349:AAGUGpI6oMgezVoediL7NYSmn65FVKnb7Q0")
+	kolgramOb.GetUpdates()
 	//getIdhh()
 	// fmt.Print(bb)
 
