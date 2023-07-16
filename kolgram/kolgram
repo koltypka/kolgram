@@ -1,0 +1,58 @@
+package kolgram
+
+import (
+	"encoding/json"
+	"fmt"
+
+	request "github.com/koltypka/kolRequest/kolRequest"
+)
+
+type Telegram {
+	kolRequest kolRequest
+}
+
+func New(token string) Telegram {
+	return Request{
+		kolRequest:     request.New("https://api.telegram.org/bot" + token)
+	}
+}
+
+func getUpdates() {
+	result, _ := Request.Get("getUpdates")
+	
+	var jsonResult interface{}
+
+	json.Unmarshal(result, &jsonResult)
+
+	myMap := jsonResult.(map[string]interface{})
+	fmt.Println(myMap)
+}
+
+func getIdhh() {
+	Request := request.New("https://api.hh.ru")
+
+	Request.AddParam("employer_id", "1975264")
+	Request.AddParam("page", "2")
+
+	aaa, _ := Request.Get("vacancies/")
+
+	var hm interface{}
+
+	json.Unmarshal(aaa, &hm)
+	
+	var hm interface{}
+
+	json.Unmarshal(aaa, &hm)
+
+	myMap := hm.(map[string]interface{})
+	fmt.Println(myMap)
+
+	myMap := hm.(map[string]interface{})
+
+	items := myMap["items"].([]interface{})
+
+	//fmt.Println(items)
+	for _, value := range items {
+		fmt.Println(value.(map[string]interface{})["id"])
+	}
+}
