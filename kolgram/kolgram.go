@@ -1,7 +1,6 @@
 package kolgram
 
 import (
-	"encoding/json"
 	"fmt"
 
 	request "github.com/koltypka/kolRequest/kolRequest"
@@ -16,12 +15,7 @@ func New(token string) Telegram {
 }
 
 func (Telegram *Telegram) GetUpdates() {
-	result, _ := Telegram.Request.Get("/getUpdates") //Get("getUpdates")
+	result, _ := Telegram.Request.Post("/getUpdates")
 
-	var jsonResult interface{}
-
-	json.Unmarshal(result, &jsonResult)
-
-	myMap := jsonResult.(map[string]interface{})
-	fmt.Println(myMap)
+	fmt.Println(result.ToJson())
 }
