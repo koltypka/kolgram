@@ -443,7 +443,197 @@ func (Telegram *Telegram) EditMessageText() map[string]interface{} {
 	return Telegram.post("/editMessageText")
 }
 
-//todo editMessageCaption()
+func (Telegram *Telegram) EditMessageCaption() map[string]interface{} {
+	return Telegram.post("/editMessageCaption")
+}
+
+func (Telegram *Telegram) EditMessageMedia(media string) map[string]interface{} {
+	Telegram.AddParam("media", media)
+	return Telegram.post("/editMessageMedia")
+}
+
+func (Telegram *Telegram) EditMessageLiveLocation(latitude, longitude string) map[string]interface{} {
+	Telegram.AddParam("latitude", latitude)
+	Telegram.AddParam("longitude", longitude)
+	return Telegram.post("/editMessageLiveLocation")
+}
+
+func (Telegram *Telegram) StopMessageLiveLocation() map[string]interface{} {
+	return Telegram.post("/stopMessageLiveLocation")
+}
+
+func (Telegram *Telegram) EditMessageReplyMarkup() map[string]interface{} {
+	return Telegram.post("/editMessageReplyMarkup")
+}
+
+func (Telegram *Telegram) StopPoll(chat_id, message_id string) map[string]interface{} {
+	Telegram.AddParam("chat_id", chat_id)
+	Telegram.AddParam("message_id", message_id)
+	return Telegram.post("/stopPoll")
+}
+
+func (Telegram *Telegram) DeleteMessage(chat_id, message_id string) map[string]interface{} {
+	Telegram.AddParam("chat_id", chat_id)
+	Telegram.AddParam("message_id", message_id)
+	return Telegram.post("/deleteMessage")
+}
+
+func (Telegram *Telegram) SendSticker(chat_id, sticker string) map[string]interface{} {
+	Telegram.AddParam("chat_id", chat_id)
+	Telegram.AddParam("sticker", sticker)
+	return Telegram.post("/sendSticker")
+}
+
+func (Telegram *Telegram) GetStickerSet(name string) map[string]interface{} {
+	Telegram.AddParam("name", name)
+	return Telegram.post("/getStickerSet")
+}
+
+func (Telegram *Telegram) GetCustomEmojiStickers(custom_emoji_ids string) map[string]interface{} {
+	Telegram.AddParam("custom_emoji_ids", custom_emoji_ids)
+	return Telegram.post("/getCustomEmojiStickers")
+}
+
+func (Telegram *Telegram) UploadStickerFile(user_id, sticker, sticker_format string) map[string]interface{} {
+	Telegram.AddParam("user_id", user_id)
+	Telegram.AddParam("sticker", sticker)
+	Telegram.AddParam("sticker_format", sticker_format)
+	return Telegram.post("/uploadStickerFile")
+}
+
+func (Telegram *Telegram) CreateNewStickerSet(user_id, name, title, stickers, sticker_format string) map[string]interface{} {
+	Telegram.AddParam("user_id", user_id)
+	Telegram.AddParam("name", name)
+	Telegram.AddParam("title", title)
+	Telegram.AddParam("stickers", stickers)
+	Telegram.AddParam("sticker_format", sticker_format)
+	return Telegram.post("/createNewStickerSet")
+}
+
+func (Telegram *Telegram) AddStickerToSet(user_id, name, sticker string) map[string]interface{} {
+	Telegram.AddParam("user_id", user_id)
+	Telegram.AddParam("name", name)
+	Telegram.AddParam("sticker", sticker)
+	return Telegram.post("/addStickerToSet")
+}
+
+func (Telegram *Telegram) SetStickerPositionInSet(sticker, position string) map[string]interface{} {
+	Telegram.AddParam("sticker", sticker)
+	Telegram.AddParam("position", position)
+	return Telegram.post("/setStickerPositionInSet")
+}
+
+func (Telegram *Telegram) DeleteStickerFromSet(sticker string) map[string]interface{} {
+	Telegram.AddParam("sticker", sticker)
+	return Telegram.post("/deleteStickerFromSet")
+}
+
+func (Telegram *Telegram) SetStickerEmojiList(sticker, emoji_list string) map[string]interface{} {
+	Telegram.AddParam("sticker", sticker)
+	Telegram.AddParam("emoji_list", emoji_list)
+	return Telegram.post("/setStickerEmojiList")
+}
+
+func (Telegram *Telegram) SetStickerKeywords(sticker string) map[string]interface{} {
+	Telegram.AddParam("sticker", sticker)
+	return Telegram.post("/setStickerKeywords")
+}
+
+func (Telegram *Telegram) SetStickerMaskPosition(sticker string) map[string]interface{} {
+	Telegram.AddParam("sticker", sticker)
+	return Telegram.post("/setStickerMaskPosition")
+}
+
+func (Telegram *Telegram) SetStickerSetTitle(name, title string) map[string]interface{} {
+	Telegram.AddParam("name", name)
+	Telegram.AddParam("title", title)
+	return Telegram.post("/setStickerSetTitle")
+}
+
+func (Telegram *Telegram) SetStickerSetThumbnail(name, user_id string) map[string]interface{} {
+	Telegram.AddParam("name", name)
+	Telegram.AddParam("user_id", user_id)
+	return Telegram.post("/setStickerSetThumbnail")
+}
+
+func (Telegram *Telegram) SetCustomEmojiStickerSetThumbnail(name string) map[string]interface{} {
+	Telegram.AddParam("name", name)
+	return Telegram.post("/setCustomEmojiStickerSetThumbnail")
+}
+
+func (Telegram *Telegram) DeleteStickerSet(name string) map[string]interface{} {
+	Telegram.AddParam("name", name)
+	return Telegram.post("/deleteStickerSet")
+}
+
+func (Telegram *Telegram) AnswerInlineQuery(inline_query_id, results string) map[string]interface{} {
+	Telegram.AddParam("inline_query_id", inline_query_id)
+	Telegram.AddParam("results", results)
+	return Telegram.post("/answerInlineQuery")
+}
+
+func (Telegram *Telegram) AnswerWebAppQuery(web_app_query_id, results string) map[string]interface{} {
+	Telegram.AddParam("web_app_query_id", web_app_query_id)
+	Telegram.AddParam("results", results)
+	return Telegram.post("/answerWebAppQuery")
+}
+
+func (Telegram *Telegram) SendInvoice(chat_id, title, description, payload, provider_token, currency, prices string) map[string]interface{} {
+	Telegram.AddParam("chat_id", chat_id)
+	Telegram.AddParam("title", title)
+	Telegram.AddParam("description", description)
+	Telegram.AddParam("payload", payload)
+	Telegram.AddParam("provider_token", provider_token)
+	Telegram.AddParam("currency", currency)
+	Telegram.AddParam("prices", prices)
+	return Telegram.post("/sendInvoice")
+}
+
+func (Telegram *Telegram) CreateInvoiceLink(chat_id, title, description, payload, provider_token, currency, prices string) map[string]interface{} {
+	Telegram.AddParam("chat_id", chat_id)
+	Telegram.AddParam("title", title)
+	Telegram.AddParam("description", description)
+	Telegram.AddParam("payload", payload)
+	Telegram.AddParam("provider_token", provider_token)
+	Telegram.AddParam("currency", currency)
+	Telegram.AddParam("prices", prices)
+	return Telegram.post("/createInvoiceLink")
+}
+
+func (Telegram *Telegram) AnswerShippingQuery(shipping_query_id, ok string) map[string]interface{} {
+	Telegram.AddParam("shipping_query_id", shipping_query_id)
+	Telegram.AddParam("ok", ok)
+	return Telegram.post("/answerShippingQuery")
+}
+
+func (Telegram *Telegram) AnswerPreCheckoutQuery(pre_checkout_query_id, ok string) map[string]interface{} {
+	Telegram.AddParam("pre_checkout_query_id", pre_checkout_query_id)
+	Telegram.AddParam("ok", ok)
+	return Telegram.post("/answerPreCheckoutQuery")
+}
+
+func (Telegram *Telegram) SetPassportDataErrors(user_id, errors string) map[string]interface{} {
+	Telegram.AddParam("user_id", user_id)
+	Telegram.AddParam("errors", errors)
+	return Telegram.post("/setPassportDataErrors")
+}
+
+func (Telegram *Telegram) SendGame(chat_id, game_short_name string) map[string]interface{} {
+	Telegram.AddParam("chat_id", chat_id)
+	Telegram.AddParam("game_short_name", game_short_name)
+	return Telegram.post("/sendGame")
+}
+
+func (Telegram *Telegram) SetGameScore(user_id, score string) map[string]interface{} {
+	Telegram.AddParam("user_id", user_id)
+	Telegram.AddParam("score", score)
+	return Telegram.post("/setGameScore")
+}
+
+func (Telegram *Telegram) GetGameHighScores(user_id string) map[string]interface{} {
+	Telegram.AddParam("user_id", user_id)
+	return Telegram.get("/getGameHighScores")
+}
 
 func (Telegram *Telegram) get(method string) map[string]interface{} {
 	getResult, _ := Telegram.Request.Get(method)
