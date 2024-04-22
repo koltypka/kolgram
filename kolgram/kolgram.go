@@ -1,584 +1,688 @@
 package kolgram
 
 import (
-	request "github.com/koltypka/kolRequest/kolRequest"
+	methods "github.com/koltypka/kolgram/kolgram/methods"
 )
 
-type Telegram struct {
-	Request request.Request
+type Handler struct {
+	token string
 }
 
-func New(token string) Telegram {
-	return Telegram{request.New("https://api.telegram.org/bot" + token)}
+func New(token string) Handler {
+	return Handler{token}
 }
 
-func (Telegram *Telegram) AddParam(key, value string) {
-	Telegram.Request.AddParam(key, value)
+func (Handler *Handler) GetUpdates() methods.GetUpdates {
+	return methods.New(Handler.token).GetUpdates()
 }
 
-func (Telegram *Telegram) GetUpdates() map[string]interface{} {
-	return Telegram.get("/getUpdates")
-}
-
-func (Telegram *Telegram) SetWebhook(url string) map[string]interface{} {
+func (Handler *Handler) SetWebhook(url string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("url", url)
-	return Telegram.post("/setWebhook")
+
+	return Telegram.Post("/setWebhook")
 }
 
-func (Telegram *Telegram) DeleteWebhook() map[string]interface{} {
-	return Telegram.post("/deleteWebhook")
+func (Handler *Handler) DeleteWebhook() map[string]interface{} {
+	Telegram := methods.New(Handler.token)
+	return Telegram.Post("/deleteWebhook")
 }
 
-func (Telegram *Telegram) GetWebhookInfo() map[string]interface{} {
-	return Telegram.get("/getWebhookInfo")
+func (Handler *Handler) GetWebhookInfo() methods.GetWebhookInfo {
+	return methods.New(Handler.token).GetWebhookInfo()
 }
 
-func (Telegram *Telegram) GetMe() map[string]interface{} {
-	return Telegram.get("/getMe")
+func (Handler *Handler) GetMe() methods.GetMe {
+	return methods.New(Handler.token).GetMe()
 }
 
-func (Telegram *Telegram) LogOut() map[string]interface{} {
-	return Telegram.post("/logOut")
+func (Handler *Handler) LogOut() map[string]interface{} {
+	Telegram := methods.New(Handler.token)
+	return Telegram.Post("/logOut")
 }
 
-func (Telegram *Telegram) Close() map[string]interface{} {
-	return Telegram.post("/close")
+func (Handler *Handler) Close() map[string]interface{} {
+	Telegram := methods.New(Handler.token)
+	return Telegram.Post("/close")
 }
 
-func (Telegram *Telegram) SendMessage(chat_id, text string) map[string]interface{} {
+func (Handler *Handler) SendMessage(chat_id, text string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("text", text)
-	return Telegram.post("/sendMessage")
+	return Telegram.Post("/sendMessage")
 }
 
-func (Telegram *Telegram) ForwardMessage(chat_id, from_chat_id, message_id string) map[string]interface{} {
+func (Handler *Handler) ForwardMessage(chat_id, from_chat_id, message_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("from_chat_id", from_chat_id)
 	Telegram.AddParam("message_id", message_id)
-	return Telegram.post("/forwardMessage")
+	return Telegram.Post("/forwardMessage")
 }
 
-func (Telegram *Telegram) CopyMessage(chat_id, from_chat_id, message_id string) map[string]interface{} {
+func (Handler *Handler) CopyMessage(chat_id, from_chat_id, message_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("from_chat_id", from_chat_id)
 	Telegram.AddParam("message_id", message_id)
-	return Telegram.post("/copyMessage")
+	return Telegram.Post("/copyMessage")
 }
 
-func (Telegram *Telegram) SendPhoto(chat_id, photo string) map[string]interface{} {
+func (Handler *Handler) SendPhoto(chat_id, photo string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("photo", photo)
-	return Telegram.post("/sendPhoto")
+	return Telegram.Post("/sendPhoto")
 }
 
-func (Telegram *Telegram) SendAudio(chat_id, audio string) map[string]interface{} {
+func (Handler *Handler) SendAudio(chat_id, audio string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("audio", audio)
-	return Telegram.post("/sendAudio")
+	return Telegram.Post("/sendAudio")
 }
 
-func (Telegram *Telegram) SendDocument(chat_id, document string) map[string]interface{} {
+func (Handler *Handler) SendDocument(chat_id, document string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("document", document)
-	return Telegram.post("/sendDocument")
+	return Telegram.Post("/sendDocument")
 }
 
-func (Telegram *Telegram) SendVideo(chat_id, video string) map[string]interface{} {
+func (Handler *Handler) SendVideo(chat_id, video string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("video", video)
-	return Telegram.post("/sendVideo")
+	return Telegram.Post("/sendVideo")
 }
 
-func (Telegram *Telegram) Animation(chat_id, animation string) map[string]interface{} {
+func (Handler *Handler) Animation(chat_id, animation string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("animation", animation)
-	return Telegram.post("/animation")
+	return Telegram.Post("/animation")
 }
 
-func (Telegram *Telegram) SendVoice(chat_id, voice string) map[string]interface{} {
+func (Handler *Handler) SendVoice(chat_id, voice string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("voice", voice)
-	return Telegram.post("/sendVoice")
+	return Telegram.Post("/sendVoice")
 }
 
-func (Telegram *Telegram) SendVideoNote(chat_id, video_note string) map[string]interface{} {
+func (Handler *Handler) SendVideoNote(chat_id, video_note string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("video_note", video_note)
-	return Telegram.post("/sendVideoNote")
+	return Telegram.Post("/sendVideoNote")
 }
 
-func (Telegram *Telegram) SendMediaGroup(chat_id, media string) map[string]interface{} {
+func (Handler *Handler) SendMediaGroup(chat_id, media string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("media", media)
-	return Telegram.post("/sendMediaGroup")
+	return Telegram.Post("/sendMediaGroup")
 }
 
-func (Telegram *Telegram) SendLocation(chat_id, latitude, longitude string) map[string]interface{} {
+func (Handler *Handler) SendLocation(chat_id, latitude, longitude string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("latitude", latitude)
 	Telegram.AddParam("longitude", longitude)
-	return Telegram.post("/sendLocation")
+	return Telegram.Post("/sendLocation")
 }
 
-func (Telegram *Telegram) SendVenue(chat_id, latitude, longitude, title, address string) map[string]interface{} {
+func (Handler *Handler) SendVenue(chat_id, latitude, longitude, title, address string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("latitude", latitude)
 	Telegram.AddParam("longitude", longitude)
 	Telegram.AddParam("title", title)
 	Telegram.AddParam("address", address)
-	return Telegram.post("/sendVenue")
+	return Telegram.Post("/sendVenue")
 }
 
-func (Telegram *Telegram) SendContact(chat_id, phone_number, first_name string) map[string]interface{} {
+func (Handler *Handler) SendContact(chat_id, phone_number, first_name string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("phone_number", phone_number)
 	Telegram.AddParam("first_name", first_name)
-	return Telegram.post("/sendContact")
+	return Telegram.Post("/sendContact")
 }
 
-func (Telegram *Telegram) SendPoll(chat_id, question, options string) map[string]interface{} {
+func (Handler *Handler) SendPoll(chat_id, question, options string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("question", question)
 	Telegram.AddParam("options", options)
-	return Telegram.post("/sendPoll")
+	return Telegram.Post("/sendPoll")
 }
 
-func (Telegram *Telegram) SendDice(chat_id string) map[string]interface{} {
+func (Handler *Handler) SendDice(chat_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
-	return Telegram.post("/sendDice")
+	return Telegram.Post("/sendDice")
 }
 
-func (Telegram *Telegram) SendChatAction(chat_id, action string) map[string]interface{} {
+func (Handler *Handler) SendChatAction(chat_id, action string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("action", action)
-	return Telegram.post("/sendChatAction")
+	return Telegram.Post("/sendChatAction")
 }
 
-func (Telegram *Telegram) GetUserProfilePhotos(user_id string) map[string]interface{} {
+/*
+func (Handler *Handler) GetUserProfilePhotos(user_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("user_id", user_id)
 	return Telegram.get("/getUserProfilePhotos")
 }
 
-func (Telegram *Telegram) GetFile(file_id string) map[string]interface{} {
+func (Handler *Handler) GetFile(file_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("file_id", file_id)
 	return Telegram.get("/getFile")
-}
+}*/
 
-func (Telegram *Telegram) BanChatMember(chat_id, user_id string) map[string]interface{} {
+func (Handler *Handler) BanChatMember(chat_id, user_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("user_id", user_id)
-	return Telegram.post("/banChatMember")
+	return Telegram.Post("/banChatMember")
 }
 
-func (Telegram *Telegram) UnbanChatMember(chat_id, user_id string) map[string]interface{} {
+func (Handler *Handler) UnbanChatMember(chat_id, user_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("user_id", user_id)
-	return Telegram.post("/unbanChatMember")
+	return Telegram.Post("/unbanChatMember")
 }
 
-func (Telegram *Telegram) RestrictChatMember(chat_id, user_id, permissions string) map[string]interface{} {
+func (Handler *Handler) RestrictChatMember(chat_id, user_id, permissions string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("user_id", user_id)
 	Telegram.AddParam("permissions", permissions)
-	return Telegram.post("/restrictChatMember")
+	return Telegram.Post("/restrictChatMember")
 }
 
-func (Telegram *Telegram) PromoteChatMember(chat_id, user_id string) map[string]interface{} {
+func (Handler *Handler) PromoteChatMember(chat_id, user_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("user_id", user_id)
-	return Telegram.post("/promoteChatMember")
+	return Telegram.Post("/promoteChatMember")
 }
 
-func (Telegram *Telegram) SetChatAdministratorCustomTitle(chat_id, user_id, custom_title string) map[string]interface{} {
+func (Handler *Handler) SetChatAdministratorCustomTitle(chat_id, user_id, custom_title string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("user_id", user_id)
 	Telegram.AddParam("custom_title", custom_title)
-	return Telegram.post("/setChatAdministratorCustomTitle")
+	return Telegram.Post("/setChatAdministratorCustomTitle")
 }
 
-func (Telegram *Telegram) BanChatSenderChat(chat_id, sender_chat_id string) map[string]interface{} {
+func (Handler *Handler) BanChatSenderChat(chat_id, sender_chat_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("sender_chat_id", sender_chat_id)
-	return Telegram.post("/banChatSenderChat")
+	return Telegram.Post("/banChatSenderChat")
 }
 
-func (Telegram *Telegram) UnbanChatSenderChat(chat_id, sender_chat_id string) map[string]interface{} {
+func (Handler *Handler) UnbanChatSenderChat(chat_id, sender_chat_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("sender_chat_id", sender_chat_id)
-	return Telegram.post("/unbanChatSenderChat")
+	return Telegram.Post("/unbanChatSenderChat")
 }
 
-func (Telegram *Telegram) SetChatPermissions(chat_id, permissions string) map[string]interface{} {
+/*
+func (Handler *Handler) SetChatPermissions(chat_id, permissions string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("permissions", permissions)
-	return Telegram.post("/setChatPermissions")
+	return Telegram.Post("/setChatPermissions")
 }
-
-func (Telegram *Telegram) ExportChatInviteLink(chat_id string) map[string]interface{} {
+*/
+func (Handler *Handler) ExportChatInviteLink(chat_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
-	return Telegram.post("/exportChatInviteLink")
+	return Telegram.Post("/exportChatInviteLink")
 }
 
-func (Telegram *Telegram) CreateChatInviteLink(chat_id string) map[string]interface{} {
+func (Handler *Handler) CreateChatInviteLink(chat_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
-	return Telegram.post("/createChatInviteLink")
+	return Telegram.Post("/createChatInviteLink")
 }
 
-func (Telegram *Telegram) EditChatInviteLink(chat_id, invite_link string) map[string]interface{} {
-	Telegram.AddParam("chat_id", chat_id)
-	Telegram.AddParam("invite_link", invite_link)
-	return Telegram.post("/editChatInviteLink")
-}
-
-func (Telegram *Telegram) RevokeChatInviteLink(chat_id, invite_link string) map[string]interface{} {
+func (Handler *Handler) EditChatInviteLink(chat_id, invite_link string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("invite_link", invite_link)
-	return Telegram.post("/revokeChatInviteLink")
+	return Telegram.Post("/editChatInviteLink")
 }
 
-func (Telegram *Telegram) ApproveChatJoinRequest(chat_id, user_id string) map[string]interface{} {
+func (Handler *Handler) RevokeChatInviteLink(chat_id, invite_link string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
+	Telegram.AddParam("chat_id", chat_id)
+	Telegram.AddParam("invite_link", invite_link)
+	return Telegram.Post("/revokeChatInviteLink")
+}
+
+func (Handler *Handler) ApproveChatJoinRequest(chat_id, user_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("user_id", user_id)
-	return Telegram.post("/approveChatJoinRequest")
+	return Telegram.Post("/approveChatJoinRequest")
 }
 
-func (Telegram *Telegram) DeclineChatJoinRequest(chat_id, user_id string) map[string]interface{} {
+func (Handler *Handler) DeclineChatJoinRequest(chat_id, user_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("user_id", user_id)
-	return Telegram.post("/declineChatJoinRequest")
+	return Telegram.Post("/declineChatJoinRequest")
 }
 
-func (Telegram *Telegram) SetChatPhoto(chat_id, photo string) map[string]interface{} {
+func (Handler *Handler) SetChatPhoto(chat_id, photo string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("photo", photo)
-	return Telegram.post("/setChatPhoto")
+	return Telegram.Post("/setChatPhoto")
 }
 
-func (Telegram *Telegram) DeleteChatPhoto(chat_id string) map[string]interface{} {
+func (Handler *Handler) DeleteChatPhoto(chat_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
-	return Telegram.post("/deleteChatPhoto")
+	return Telegram.Post("/deleteChatPhoto")
 }
 
-func (Telegram *Telegram) SetChatTitle(chat_id, title string) map[string]interface{} {
+func (Handler *Handler) SetChatTitle(chat_id, title string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("title", title)
-	return Telegram.post("/setChatTitle")
+	return Telegram.Post("/setChatTitle")
 }
 
-func (Telegram *Telegram) SetChatDescription(chat_id string) map[string]interface{} {
+func (Handler *Handler) SetChatDescription(chat_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
-	return Telegram.post("/setChatDescription")
+	return Telegram.Post("/setChatDescription")
 }
 
-func (Telegram *Telegram) PinChatMessage(chat_id, message_id string) map[string]interface{} {
+func (Handler *Handler) PinChatMessage(chat_id, message_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("message_id", message_id)
-	return Telegram.post("/pinChatMessage")
+	return Telegram.Post("/pinChatMessage")
 }
 
-func (Telegram *Telegram) UnpinChatMessage(chat_id string) map[string]interface{} {
+func (Handler *Handler) UnpinChatMessage(chat_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
-	return Telegram.post("/unpinChatMessage")
+	return Telegram.Post("/unpinChatMessage")
 }
 
-func (Telegram *Telegram) UnpinAllChatMessages(chat_id string) map[string]interface{} {
+func (Handler *Handler) UnpinAllChatMessages(chat_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
-	return Telegram.post("/unpinAllChatMessages")
+	return Telegram.Post("/unpinAllChatMessages")
 }
 
-func (Telegram *Telegram) LeaveChat(chat_id string) map[string]interface{} {
+func (Handler *Handler) LeaveChat(chat_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
-	return Telegram.post("/leaveChat")
+	return Telegram.Post("/leaveChat")
 }
 
-func (Telegram *Telegram) GetChat(chat_id string) map[string]interface{} {
+/*
+func (Handler *Handler) GetChat(chat_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	return Telegram.get("/getChat")
 }
 
-func (Telegram *Telegram) GetChatAdministrators(chat_id string) map[string]interface{} {
+func (Handler *Handler) GetChatAdministrators(chat_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	return Telegram.get("/getChatAdministrators")
 }
 
-func (Telegram *Telegram) GetChatMemberCount(chat_id string) map[string]interface{} {
+func (Handler *Handler) GetChatMemberCount(chat_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	return Telegram.get("/getChatMemberCount")
 }
 
-func (Telegram *Telegram) GetChatMember(chat_id, user_id string) map[string]interface{} {
+func (Handler *Handler) GetChatMember(chat_id, user_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("user_id", user_id)
 	return Telegram.get("/getChatMember")
 }
-
-func (Telegram *Telegram) SetChatStickerSet(chat_id, sticker_set_name string) map[string]interface{} {
+*/
+func (Handler *Handler) SetChatStickerSet(chat_id, sticker_set_name string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("sticker_set_name", sticker_set_name)
-	return Telegram.post("/setChatStickerSet")
+	return Telegram.Post("/setChatStickerSet")
 }
 
-func (Telegram *Telegram) DeleteChatStickerSet(chat_id string) map[string]interface{} {
+func (Handler *Handler) DeleteChatStickerSet(chat_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
-	return Telegram.post("/deleteChatStickerSet")
+	return Telegram.Post("/deleteChatStickerSet")
 }
 
-func (Telegram *Telegram) GetForumTopicIconStickers() map[string]interface{} {
-	return Telegram.get("/deleteChatStickerSet")
-}
+// func (Handler *Handler) GetForumTopicIconStickers() map[string]interface{} {
+// 	Telegram := methods.New(Handler.token)
+// 	return Telegram.get("/deleteChatStickerSet")
+// }
 
-func (Telegram *Telegram) CreateForumTopic(chat_id, name string) map[string]interface{} {
-	Telegram.AddParam("chat_id", chat_id)
-	Telegram.AddParam("name", name)
-	return Telegram.post("/createForumTopic")
-}
-
-func (Telegram *Telegram) EditForumTopic(chat_id, message_thread_id string) map[string]interface{} {
-	Telegram.AddParam("chat_id", chat_id)
-	Telegram.AddParam("message_thread_id", message_thread_id)
-	return Telegram.post("/editForumTopic")
-}
-
-func (Telegram *Telegram) CloseForumTopic(chat_id, message_thread_id string) map[string]interface{} {
-	Telegram.AddParam("chat_id", chat_id)
-	Telegram.AddParam("message_thread_id", message_thread_id)
-	return Telegram.post("/closeForumTopic")
-}
-
-func (Telegram *Telegram) ReopenForumTopic(chat_id, message_thread_id string) map[string]interface{} {
-	Telegram.AddParam("chat_id", chat_id)
-	Telegram.AddParam("message_thread_id", message_thread_id)
-	return Telegram.post("/reopenForumTopic")
-}
-
-func (Telegram *Telegram) DeleteForumTopic(chat_id, message_thread_id string) map[string]interface{} {
-	Telegram.AddParam("chat_id", chat_id)
-	Telegram.AddParam("message_thread_id", message_thread_id)
-	return Telegram.post("/deleteForumTopic")
-}
-
-func (Telegram *Telegram) UnpinAllForumTopicMessages(chat_id, message_thread_id string) map[string]interface{} {
-	Telegram.AddParam("chat_id", chat_id)
-	Telegram.AddParam("message_thread_id", message_thread_id)
-	return Telegram.post("/unpinAllForumTopicMessages")
-}
-
-func (Telegram *Telegram) EditGeneralForumTopic(chat_id, name string) map[string]interface{} {
+func (Handler *Handler) CreateForumTopic(chat_id, name string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("name", name)
-	return Telegram.post("/editGeneralForumTopic")
+	return Telegram.Post("/createForumTopic")
 }
 
-func (Telegram *Telegram) CloseGeneralForumTopic(chat_id string) map[string]interface{} {
+func (Handler *Handler) EditForumTopic(chat_id, message_thread_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
-	return Telegram.post("/closeGeneralForumTopic")
+	Telegram.AddParam("message_thread_id", message_thread_id)
+	return Telegram.Post("/editForumTopic")
 }
 
-func (Telegram *Telegram) ReopenGeneralForumTopic(chat_id string) map[string]interface{} {
+func (Handler *Handler) CloseForumTopic(chat_id, message_thread_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
-	return Telegram.post("/reopenGeneralForumTopic")
+	Telegram.AddParam("message_thread_id", message_thread_id)
+	return Telegram.Post("/closeForumTopic")
 }
 
-func (Telegram *Telegram) HideGeneralForumTopic(chat_id string) map[string]interface{} {
+func (Handler *Handler) ReopenForumTopic(chat_id, message_thread_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
-	return Telegram.post("/hideGeneralForumTopic")
+	Telegram.AddParam("message_thread_id", message_thread_id)
+	return Telegram.Post("/reopenForumTopic")
 }
 
-func (Telegram *Telegram) UnhideGeneralForumTopic(chat_id string) map[string]interface{} {
+func (Handler *Handler) DeleteForumTopic(chat_id, message_thread_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
-	return Telegram.post("/unhideGeneralForumTopic")
+	Telegram.AddParam("message_thread_id", message_thread_id)
+	return Telegram.Post("/deleteForumTopic")
 }
 
-func (Telegram *Telegram) AnswerCallbackQuery(callback_query_id string) map[string]interface{} {
+func (Handler *Handler) UnpinAllForumTopicMessages(chat_id, message_thread_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
+	Telegram.AddParam("chat_id", chat_id)
+	Telegram.AddParam("message_thread_id", message_thread_id)
+	return Telegram.Post("/unpinAllForumTopicMessages")
+}
+
+func (Handler *Handler) EditGeneralForumTopic(chat_id, name string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
+	Telegram.AddParam("chat_id", chat_id)
+	Telegram.AddParam("name", name)
+	return Telegram.Post("/editGeneralForumTopic")
+}
+
+func (Handler *Handler) CloseGeneralForumTopic(chat_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
+	Telegram.AddParam("chat_id", chat_id)
+	return Telegram.Post("/closeGeneralForumTopic")
+}
+
+func (Handler *Handler) ReopenGeneralForumTopic(chat_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
+	Telegram.AddParam("chat_id", chat_id)
+	return Telegram.Post("/reopenGeneralForumTopic")
+}
+
+func (Handler *Handler) HideGeneralForumTopic(chat_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
+	Telegram.AddParam("chat_id", chat_id)
+	return Telegram.Post("/hideGeneralForumTopic")
+}
+
+func (Handler *Handler) UnhideGeneralForumTopic(chat_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
+	Telegram.AddParam("chat_id", chat_id)
+	return Telegram.Post("/unhideGeneralForumTopic")
+}
+
+func (Handler *Handler) AnswerCallbackQuery(callback_query_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("callback_query_id", callback_query_id)
-	return Telegram.post("/answerCallbackQuery")
+	return Telegram.Post("/answerCallbackQuery")
 }
 
-func (Telegram *Telegram) SetMyCommands(commands string) map[string]interface{} {
+func (Handler *Handler) SetMyCommands(commands string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("commands", commands)
-	return Telegram.post("/setMyCommands")
+	return Telegram.Post("/setMyCommands")
 }
 
-func (Telegram *Telegram) DeleteMyCommands() map[string]interface{} {
-	return Telegram.post("/deleteMyCommands")
+func (Handler *Handler) DeleteMyCommands() map[string]interface{} {
+	Telegram := methods.New(Handler.token)
+	return Telegram.Post("/deleteMyCommands")
 }
 
-func (Telegram *Telegram) GetMyCommands() map[string]interface{} {
-	return Telegram.get("/getMyCommands")
+// func (Handler *Handler) GetMyCommands() map[string]interface{} {
+// 	Telegram := methods.New(Handler.token)
+// 	return Telegram.get("/getMyCommands")
+// }
+
+func (Handler *Handler) SetMyDescription() map[string]interface{} {
+	Telegram := methods.New(Handler.token)
+	return Telegram.Post("/setMyDescription")
 }
 
-func (Telegram *Telegram) SetMyDescription() map[string]interface{} {
-	return Telegram.post("/setMyDescription")
-}
-
-func (Telegram *Telegram) GetMyDescription() map[string]interface{} {
+/*
+func (Handler *Handler) GetMyDescription() map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	return Telegram.get("/getMyDescription")
 }
 
-func (Telegram *Telegram) SetMyShortDescription() map[string]interface{} {
-	return Telegram.post("/setMyShortDescription")
+func (Handler *Handler) SetMyShortDescription() map[string]interface{} {
+	Telegram := methods.New(Handler.token)
+	return Telegram.Post("/setMyShortDescription")
 }
 
-func (Telegram *Telegram) GetMyShortDescription() map[string]interface{} {
+func (Handler *Handler) GetMyShortDescription() map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	return Telegram.get("/getMyShortDescription")
+}*/
+
+func (Handler *Handler) SetChatMenuButton() map[string]interface{} {
+	Telegram := methods.New(Handler.token)
+	return Telegram.Post("/setChatMenuButton")
 }
 
-func (Telegram *Telegram) SetChatMenuButton() map[string]interface{} {
-	return Telegram.post("/setChatMenuButton")
-}
-
-func (Telegram *Telegram) GetChatMenuButton() map[string]interface{} {
+/*
+func (Handler *Handler) GetChatMenuButton() map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	return Telegram.get("/getChatMenuButton")
 }
 
-func (Telegram *Telegram) SetMyDefaultAdministratorRights() map[string]interface{} {
-	return Telegram.post("/setMyDefaultAdministratorRights")
+func (Handler *Handler) SetMyDefaultAdministratorRights() map[string]interface{} {
+	Telegram := methods.New(Handler.token)
+	return Telegram.Post("/setMyDefaultAdministratorRights")
 }
 
-func (Telegram *Telegram) GetMyDefaultAdministratorRights() map[string]interface{} {
+func (Handler *Handler) GetMyDefaultAdministratorRights() map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	return Telegram.get("/getMyDefaultAdministratorRights")
+}*/
+
+func (Handler *Handler) EditMessageText() map[string]interface{} {
+	Telegram := methods.New(Handler.token)
+	return Telegram.Post("/editMessageText")
 }
 
-func (Telegram *Telegram) EditMessageText() map[string]interface{} {
-	return Telegram.post("/editMessageText")
+func (Handler *Handler) EditMessageCaption() map[string]interface{} {
+	Telegram := methods.New(Handler.token)
+	return Telegram.Post("/editMessageCaption")
 }
 
-func (Telegram *Telegram) EditMessageCaption() map[string]interface{} {
-	return Telegram.post("/editMessageCaption")
-}
-
-func (Telegram *Telegram) EditMessageMedia(media string) map[string]interface{} {
+func (Handler *Handler) EditMessageMedia(media string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("media", media)
-	return Telegram.post("/editMessageMedia")
+	return Telegram.Post("/editMessageMedia")
 }
 
-func (Telegram *Telegram) EditMessageLiveLocation(latitude, longitude string) map[string]interface{} {
+func (Handler *Handler) EditMessageLiveLocation(latitude, longitude string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("latitude", latitude)
 	Telegram.AddParam("longitude", longitude)
-	return Telegram.post("/editMessageLiveLocation")
+	return Telegram.Post("/editMessageLiveLocation")
 }
 
-func (Telegram *Telegram) StopMessageLiveLocation() map[string]interface{} {
-	return Telegram.post("/stopMessageLiveLocation")
+func (Handler *Handler) StopMessageLiveLocation() map[string]interface{} {
+	Telegram := methods.New(Handler.token)
+	return Telegram.Post("/stopMessageLiveLocation")
 }
 
-func (Telegram *Telegram) EditMessageReplyMarkup() map[string]interface{} {
-	return Telegram.post("/editMessageReplyMarkup")
+func (Handler *Handler) EditMessageReplyMarkup() map[string]interface{} {
+	Telegram := methods.New(Handler.token)
+	return Telegram.Post("/editMessageReplyMarkup")
 }
 
-func (Telegram *Telegram) StopPoll(chat_id, message_id string) map[string]interface{} {
+func (Handler *Handler) StopPoll(chat_id, message_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("message_id", message_id)
-	return Telegram.post("/stopPoll")
+	return Telegram.Post("/stopPoll")
 }
 
-func (Telegram *Telegram) DeleteMessage(chat_id, message_id string) map[string]interface{} {
+func (Handler *Handler) DeleteMessage(chat_id, message_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("message_id", message_id)
-	return Telegram.post("/deleteMessage")
+	return Telegram.Post("/deleteMessage")
 }
 
-func (Telegram *Telegram) SendSticker(chat_id, sticker string) map[string]interface{} {
+func (Handler *Handler) SendSticker(chat_id, sticker string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("sticker", sticker)
-	return Telegram.post("/sendSticker")
+	return Telegram.Post("/sendSticker")
 }
 
-func (Telegram *Telegram) GetStickerSet(name string) map[string]interface{} {
+func (Handler *Handler) GetStickerSet(name string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("name", name)
-	return Telegram.post("/getStickerSet")
+	return Telegram.Post("/getStickerSet")
 }
 
-func (Telegram *Telegram) GetCustomEmojiStickers(custom_emoji_ids string) map[string]interface{} {
+func (Handler *Handler) GetCustomEmojiStickers(custom_emoji_ids string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("custom_emoji_ids", custom_emoji_ids)
-	return Telegram.post("/getCustomEmojiStickers")
+	return Telegram.Post("/getCustomEmojiStickers")
 }
 
-func (Telegram *Telegram) UploadStickerFile(user_id, sticker, sticker_format string) map[string]interface{} {
+func (Handler *Handler) UploadStickerFile(user_id, sticker, sticker_format string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("user_id", user_id)
 	Telegram.AddParam("sticker", sticker)
 	Telegram.AddParam("sticker_format", sticker_format)
-	return Telegram.post("/uploadStickerFile")
+	return Telegram.Post("/uploadStickerFile")
 }
 
-func (Telegram *Telegram) CreateNewStickerSet(user_id, name, title, stickers, sticker_format string) map[string]interface{} {
+func (Handler *Handler) CreateNewStickerSet(user_id, name, title, stickers, sticker_format string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("user_id", user_id)
 	Telegram.AddParam("name", name)
 	Telegram.AddParam("title", title)
 	Telegram.AddParam("stickers", stickers)
 	Telegram.AddParam("sticker_format", sticker_format)
-	return Telegram.post("/createNewStickerSet")
+	return Telegram.Post("/createNewStickerSet")
 }
 
-func (Telegram *Telegram) AddStickerToSet(user_id, name, sticker string) map[string]interface{} {
+func (Handler *Handler) AddStickerToSet(user_id, name, sticker string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("user_id", user_id)
 	Telegram.AddParam("name", name)
 	Telegram.AddParam("sticker", sticker)
-	return Telegram.post("/addStickerToSet")
+	return Telegram.Post("/addStickerToSet")
 }
 
-func (Telegram *Telegram) SetStickerPositionInSet(sticker, position string) map[string]interface{} {
+func (Handler *Handler) SetStickerPositionInSet(sticker, position string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("sticker", sticker)
 	Telegram.AddParam("position", position)
-	return Telegram.post("/setStickerPositionInSet")
+	return Telegram.Post("/setStickerPositionInSet")
 }
 
-func (Telegram *Telegram) DeleteStickerFromSet(sticker string) map[string]interface{} {
+func (Handler *Handler) DeleteStickerFromSet(sticker string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("sticker", sticker)
-	return Telegram.post("/deleteStickerFromSet")
+	return Telegram.Post("/deleteStickerFromSet")
 }
 
-func (Telegram *Telegram) SetStickerEmojiList(sticker, emoji_list string) map[string]interface{} {
+func (Handler *Handler) SetStickerEmojiList(sticker, emoji_list string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("sticker", sticker)
 	Telegram.AddParam("emoji_list", emoji_list)
-	return Telegram.post("/setStickerEmojiList")
+	return Telegram.Post("/setStickerEmojiList")
 }
 
-func (Telegram *Telegram) SetStickerKeywords(sticker string) map[string]interface{} {
+func (Handler *Handler) SetStickerKeywords(sticker string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("sticker", sticker)
-	return Telegram.post("/setStickerKeywords")
+	return Telegram.Post("/setStickerKeywords")
 }
 
-func (Telegram *Telegram) SetStickerMaskPosition(sticker string) map[string]interface{} {
+func (Handler *Handler) SetStickerMaskPosition(sticker string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("sticker", sticker)
-	return Telegram.post("/setStickerMaskPosition")
+	return Telegram.Post("/setStickerMaskPosition")
 }
 
-func (Telegram *Telegram) SetStickerSetTitle(name, title string) map[string]interface{} {
+func (Handler *Handler) SetStickerSetTitle(name, title string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("name", name)
 	Telegram.AddParam("title", title)
-	return Telegram.post("/setStickerSetTitle")
+	return Telegram.Post("/setStickerSetTitle")
 }
 
-func (Telegram *Telegram) SetStickerSetThumbnail(name, user_id string) map[string]interface{} {
+func (Handler *Handler) SetStickerSetThumbnail(name, user_id string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("name", name)
 	Telegram.AddParam("user_id", user_id)
-	return Telegram.post("/setStickerSetThumbnail")
+	return Telegram.Post("/setStickerSetThumbnail")
 }
 
-func (Telegram *Telegram) SetCustomEmojiStickerSetThumbnail(name string) map[string]interface{} {
+func (Handler *Handler) SetCustomEmojiStickerSetThumbnail(name string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("name", name)
-	return Telegram.post("/setCustomEmojiStickerSetThumbnail")
+	return Telegram.Post("/setCustomEmojiStickerSetThumbnail")
 }
 
-func (Telegram *Telegram) DeleteStickerSet(name string) map[string]interface{} {
+func (Handler *Handler) DeleteStickerSet(name string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("name", name)
-	return Telegram.post("/deleteStickerSet")
+	return Telegram.Post("/deleteStickerSet")
 }
 
-func (Telegram *Telegram) AnswerInlineQuery(inline_query_id, results string) map[string]interface{} {
+func (Handler *Handler) AnswerInlineQuery(inline_query_id, results string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("inline_query_id", inline_query_id)
 	Telegram.AddParam("results", results)
-	return Telegram.post("/answerInlineQuery")
+	return Telegram.Post("/answerInlineQuery")
 }
 
-func (Telegram *Telegram) AnswerWebAppQuery(web_app_query_id, results string) map[string]interface{} {
+func (Handler *Handler) AnswerWebAppQuery(web_app_query_id, results string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("web_app_query_id", web_app_query_id)
 	Telegram.AddParam("results", results)
-	return Telegram.post("/answerWebAppQuery")
+	return Telegram.Post("/answerWebAppQuery")
 }
 
-func (Telegram *Telegram) SendInvoice(chat_id, title, description, payload, provider_token, currency, prices string) map[string]interface{} {
+func (Handler *Handler) SendInvoice(chat_id, title, description, payload, provider_token, currency, prices string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("title", title)
 	Telegram.AddParam("description", description)
@@ -586,10 +690,11 @@ func (Telegram *Telegram) SendInvoice(chat_id, title, description, payload, prov
 	Telegram.AddParam("provider_token", provider_token)
 	Telegram.AddParam("currency", currency)
 	Telegram.AddParam("prices", prices)
-	return Telegram.post("/sendInvoice")
+	return Telegram.Post("/sendInvoice")
 }
 
-func (Telegram *Telegram) CreateInvoiceLink(chat_id, title, description, payload, provider_token, currency, prices string) map[string]interface{} {
+func (Handler *Handler) CreateInvoiceLink(chat_id, title, description, payload, provider_token, currency, prices string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("title", title)
 	Telegram.AddParam("description", description)
@@ -597,54 +702,46 @@ func (Telegram *Telegram) CreateInvoiceLink(chat_id, title, description, payload
 	Telegram.AddParam("provider_token", provider_token)
 	Telegram.AddParam("currency", currency)
 	Telegram.AddParam("prices", prices)
-	return Telegram.post("/createInvoiceLink")
+	return Telegram.Post("/createInvoiceLink")
 }
 
-func (Telegram *Telegram) AnswerShippingQuery(shipping_query_id, ok string) map[string]interface{} {
+func (Handler *Handler) AnswerShippingQuery(shipping_query_id, ok string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("shipping_query_id", shipping_query_id)
 	Telegram.AddParam("ok", ok)
-	return Telegram.post("/answerShippingQuery")
+	return Telegram.Post("/answerShippingQuery")
 }
 
-func (Telegram *Telegram) AnswerPreCheckoutQuery(pre_checkout_query_id, ok string) map[string]interface{} {
+func (Handler *Handler) AnswerPreCheckoutQuery(pre_checkout_query_id, ok string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("pre_checkout_query_id", pre_checkout_query_id)
 	Telegram.AddParam("ok", ok)
-	return Telegram.post("/answerPreCheckoutQuery")
+	return Telegram.Post("/answerPreCheckoutQuery")
 }
 
-func (Telegram *Telegram) SetPassportDataErrors(user_id, errors string) map[string]interface{} {
+func (Handler *Handler) SetPassportDataErrors(user_id, errors string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("user_id", user_id)
 	Telegram.AddParam("errors", errors)
-	return Telegram.post("/setPassportDataErrors")
+	return Telegram.Post("/setPassportDataErrors")
 }
 
-func (Telegram *Telegram) SendGame(chat_id, game_short_name string) map[string]interface{} {
+func (Handler *Handler) SendGame(chat_id, game_short_name string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("chat_id", chat_id)
 	Telegram.AddParam("game_short_name", game_short_name)
-	return Telegram.post("/sendGame")
+	return Telegram.Post("/sendGame")
 }
 
-func (Telegram *Telegram) SetGameScore(user_id, score string) map[string]interface{} {
+func (Handler *Handler) SetGameScore(user_id, score string) map[string]interface{} {
+	Telegram := methods.New(Handler.token)
 	Telegram.AddParam("user_id", user_id)
 	Telegram.AddParam("score", score)
-	return Telegram.post("/setGameScore")
+	return Telegram.Post("/setGameScore")
 }
 
-func (Telegram *Telegram) GetGameHighScores(user_id string) map[string]interface{} {
-	Telegram.AddParam("user_id", user_id)
-	return Telegram.get("/getGameHighScores")
-}
-
-func (Telegram *Telegram) get(method string) map[string]interface{} {
-	getResult, _ := Telegram.Request.Get(method)
-	result, _ := getResult.ToJson()
-
-	return result
-}
-
-func (Telegram *Telegram) post(method string) map[string]interface{} {
-	getResult, _ := Telegram.Request.Post(method)
-	result, _ := getResult.ToJson()
-
-	return result
-}
+// func (Handler *Handler) GetGameHighScores(user_id string) map[string]interface{} {
+// 	Telegram := methods.New(Handler.token)
+// 	Telegram.AddParam("user_id", user_id)
+// 	return Telegram.get("/getGameHighScores")
+// }
